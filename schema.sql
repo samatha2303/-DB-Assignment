@@ -1,0 +1,42 @@
+
+
+CREATE TABLE product_category (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    desc TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE product (
+    id SERIAL PRIMARY KEY,
+    deleted_at TIMESTAMP WITH TIME ZONE,
+    name VARCHAR(255) NOT NULL,
+    product_inventory INTEGER NOT NULL REFERENCES product_inventory (id)
+);
+
+CREATE TABLE product_inventory (
+    id SERIAL PRIMARY KEY,
+    SKU VARCHAR(255) NOT NULL,
+    quantity INTEGER NOT NULL,
+    category_id INTEGER NOT NULL REFERENCES product_category (id),
+    price NUMERIC(10, 2) NOT NULL,
+    discount_id INTEGER REFERENCES discount (id),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    inventory_id INTEGER NOT NULL REFERENCES product (id),
+    modified_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE discount (
+    id SERIAL PRIMARY KEY,
+    deleted_at TIMESTAMP WITH TIME ZONE,
+    name VARCHAR(255) NOT NULL,
+    desc TEXT,
+    discount_percent NUMERIC(5, 2) NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP WITH TIME ZONE
+);
